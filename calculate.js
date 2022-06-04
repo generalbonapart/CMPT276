@@ -2,6 +2,7 @@ var grades = [65.95, 56.98, 78.62, 96.1, 90.3, 72.24, 92.34, 60.00, 81.43, 86.22
     49.93, 52.34, 53.11, 50.10, 88.88, 55.32, 55.69, 61.68, 70.44, 70.54, 90.0, 71.11, 80.01];
 
 var hist = [1,3,3,2,1,4,1,2,2,3,2]
+
 var bound = 100;
 var bounds = [];
 while (bound>=50)
@@ -48,22 +49,39 @@ function getLetter(i)
 function updateBounds(i){
     console.log(i)
     new_value = parseFloat(document.getElementsByName("bound")[i].value)
-    
-    if(new_value != bounds[i])
-    {
-        if(new_value<bounds[i+1] || new_value>bounds[i-1]){
-            alert("The bound should not overlap the neighboring bounds!");
-            document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
-            return;
-        }
-        else{
-            console.log(new_value)
-            document.getElementsByName("bound")[i].value = new_value.toFixed(2)
-            bounds[i] = new_value
-            updateHist2(i)
-        }
 
+    if(isNaN(new_value)){
+        alert("Invalid input");
+        document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
+        return;
     }
+    
+    if(new_value == bounds[i]){
+        document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
+        return;
+    } 
+    if((new_value<bounds[i+1] || new_value>bounds[i-1]) && i>0 && i<11){
+        alert("The bound should not overlap the neighboring bounds!");
+        document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
+        return;
+    }
+    if(new_value<bounds[i+1] && i==0){
+        alert("The bound should not overlap the neighboring bounds!");
+        document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
+        return;
+    }
+    if(new_value>bounds[i-1] && i==11){
+        alert("The bound should not overlap the neighboring bounds!");
+        document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
+        return;
+    }
+    else{
+        console.log(new_value)
+        document.getElementsByName("bound")[i].value = new_value.toFixed(2)
+        bounds[i] = new_value
+        updateHist2(i)
+    }
+    
 }
 
 function updateHist2(index){
@@ -108,7 +126,7 @@ function runcommand(evt){
     var temp = document.getElementById("grade").value;
     document.getElementById("grade").value = "";
     console.log(temp);
-    if(temp<=100 && temp>=0){
+    if(temp<=bounds[0] && temp>=bounds[11]){
         grades.push(temp);
         var index = getLetter(temp);
         hist[index] += 1
@@ -124,10 +142,12 @@ function runcommand(evt){
 
 document.getElementById("button").onclick = runcommand;
 
-for (let i=1; i<11; i++)
+for (let i=0; i<12; i++)
 {
     document.getElementsByName("bound")[i].addEventListener('blur', (event)=>updateBounds(i))
 }
+
+
 
 // document.getElementById("button").addEventListener('click', (evt)=>{console.log("world")})
 
