@@ -41,9 +41,7 @@ function getLetter(i)
 
 
 function updateBounds(i){
-    console.log(i)
     new_value = document.getElementsByName("bound")[i].value
-    console.log(new_value)
     if(isNaN(new_value) || new_value == ""){
         alert("Invalid input");
         document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
@@ -112,12 +110,11 @@ function updateHist2(index){
     bound_higher = bounds[index-1];
     bound_middle = bounds[index];
     bound_lower = bounds[index+1];
-    console.log(bound_higher,bound_middle, bound_lower)
+
     for (x in grades){
         if(grades[x]<bound_higher && grades[x]>=bound_middle){higher++;}
         if(grades[x]<bound_middle && grades[x]>=bound_lower){lower++;}
     }
-    console.log(higher, lower)
     hist[index-1] = higher;
     hist[index] = lower;
     updateHistGrade(index);
@@ -151,8 +148,7 @@ function asc(a,b){
 grades.sort(asc)
 
 
-
-function runcommand(evt){
+function addGrade(evt){
     var temp = document.getElementById("grade").value;
     document.getElementById("grade").value = "";
     console.log(temp);
@@ -170,15 +166,10 @@ function runcommand(evt){
     
 }
 
-document.getElementById("button").onclick = runcommand;
+document.getElementById("button").onclick = addGrade;
 
 for (let i=0; i<12; i++)
 {
     document.getElementsByName("bound")[i].addEventListener('blur', (event)=>updateBounds(i))
 }
 
-
-
-// document.getElementById("button").addEventListener('click', (evt)=>{console.log("world")})
-
-// window.addEventListener('keypress', (evt)=>{console.log(evt.key)});
