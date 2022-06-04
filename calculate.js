@@ -22,9 +22,8 @@ function onlyNumberKey(evt) {
     return true;
 }
 
-
-function validGrade(grade){
-
+function changeWidth()
+{
 
 }
 
@@ -48,14 +47,14 @@ function getLetter(i)
 
 function updateBounds(i){
     console.log(i)
-    new_value = parseFloat(document.getElementsByName("bound")[i].value)
-
-    if(isNaN(new_value)){
+    new_value = document.getElementsByName("bound")[i].value
+    console.log(new_value)
+    if(isNaN(new_value) || new_value == ""){
         alert("Invalid input");
         document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
         return;
     }
-    
+    new_value = parseFloat(new_value)
     if(new_value == bounds[i]){
         document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
         return;
@@ -75,13 +74,41 @@ function updateBounds(i){
         document.getElementsByName("bound")[i].value = bounds[i].toFixed(2)
         return;
     }
-    else{
-        console.log(new_value)
-        document.getElementsByName("bound")[i].value = new_value.toFixed(2)
-        bounds[i] = new_value
+    
+    console.log(new_value)
+    document.getElementsByName("bound")[i].value = new_value.toFixed(2)
+    bounds[i] = new_value
+    if(i==0){
+        updateHistTop()
+    }
+    else if (i==11) {
+        updateHistBottom()
+    } 
+    else {
         updateHist2(i)
     }
     
+    
+}
+
+function updateHistBottom()
+{
+    var count = 0;
+    for (x in grades){
+        if(grades[x]>bounds[11] && grades[x]<bounds[10]){count++;}
+    }
+    hist[10] = count;
+    updateHistGrade(10);
+}
+
+function updateHistTop()
+{   
+    var count = 0;
+    for (x in grades){
+        if(grades[x]>bounds[1] && grades[x]<bounds[0]){count++;}
+    }
+    hist[0] = count;
+    updateHistGrade(0);
 }
 
 function updateHist2(index){
@@ -111,7 +138,15 @@ function updateHistGrade(index)
     for (let i=0; i<hist[index]; i++){
         text = text + 'O';
     }
-    
+    if(hist[index]>18){
+        var incr_by = hist[index] - 18;
+        var hist_box = document.getElementById("1");
+        var submit_box = document.getElementById("2");
+        new_width = 300 + incr_by*10;
+        hist_box.style.width = new_width.toString() + "px";
+        submit_box.style.width = new_width.toString() + "px";
+    }
+
     document.getElementsByClassName("cell")[index].innerHTML = text;
 }
 
@@ -133,7 +168,7 @@ function runcommand(evt){
         updateHistGrade(index)
     }
     else{
-        alert("Add a grade between 0 and 100");
+        alert("Add a grade between " + bounds[11] + " and " + bounds[0] );
     }
     
 
