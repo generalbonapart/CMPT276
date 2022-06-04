@@ -22,11 +22,6 @@ function onlyNumberKey(evt) {
     return true;
 }
 
-function changeWidth()
-{
-
-}
-
 function getLetter(i)
 {
    
